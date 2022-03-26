@@ -1,0 +1,3 @@
+(ocamllex lexer)
+(menhir (modules parser))
+(executable (name lonzo))
