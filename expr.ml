@@ -12,7 +12,11 @@ type exp =
   | ELam of param * exp
   | EApp of exp * exp
   | EVar of name
-  | EDec of name * exp
+
+(* TODO: Checkout lean syntax for abbrev *)
+type command =
+  | Decl of name * typexp * exp
+  | Eval of exp
 
 let rec t_to_s (t : typexp): name :> string =
   match t with
@@ -29,4 +33,3 @@ let rec e_to_s (exp: exp): name :> string =
   | ELam (p, e) -> String.cat "." (e_to_s e) |> String.cat(p_to_s p) |> String.cat "λ"
   | EApp (e1, e2) -> String.cat (e_to_s e1) (e_to_s e2)
   | EVar v -> v
-  | EDec (v, e) -> String.cat "=" (e_to_s e) |> String.cat v

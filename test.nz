@@ -1,1 +1,4 @@
-λx:T.x λy:T.y
+def true  : T→T→T := λx:T.λy:T.x
+def false : T→T→T := λx:T.λy:T.y
+
+#eval λx:T.x λy:T.y
