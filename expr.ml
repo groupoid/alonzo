@@ -8,7 +8,6 @@ type param =
   | PVar of name * typexp
 
 type exp =
-  | Unit
   | ELam of param * exp
   | EApp of exp * exp
   | EVar of name
@@ -29,7 +28,6 @@ let p_to_s (p : param): name :> string =
 
 let rec e_to_s (exp: exp): name :> string =
   match exp with
-  | Unit -> "()"
   | ELam (p, e) -> String.cat "." (e_to_s e) |> String.cat(p_to_s p) |> String.cat "λ"
   | EApp (e1, e2) -> String.cat (e_to_s e1) (e_to_s e2)
   | EVar v -> v

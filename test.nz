@@ -1,4 +1,8 @@
-def true  : T→T→T := λx:T.λy:T.x
-def false : T→T→T := λx:T.λy:T.y
+#eval x
+#eval λ(x:T),x
+#eval (λ(x:T),x) (λ(y:T),y)
 
-#eval λx:T.x λy:T.y
+def true  : T→T→T := λ(x:T),(λ(y:T),x)
+def false : T→T→T := λ(x:T),(λ(y:T),y)
+
+#eval (true t) f

@@ -9,10 +9,12 @@ let lam    = "\xCE\xBB"
 
 rule read = parse
 | ws+      { read lexbuf }
+| '('      { LPARENS }
+| ')'      { RPARENS }
 | lam      { LAM }
 | arrow    { ARROW }
 | ':'      { COLON }
-| '.'      { DOT }
+| ','      { COMMA }
 | "def"    { DEF }
 | ":="     { DEFEQ }
 | "abbrev" { ABBREV }
