@@ -24,7 +24,11 @@ param:
 exp:
   | IDENT { EVar $1 }
   | LAM param COMMA exp { ELam ($2, $4) }
-  | exp exp { EApp ($1, $2) }
+  | exp2 exp2+ { app $1 $2 }
+  | LPARENS exp RPARENS { $2 }
+
+exp2:
+  | IDENT { EVar $1 }
   | LPARENS exp RPARENS { $2 }
 
 command:

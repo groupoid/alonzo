@@ -6,3 +6,4 @@ def true  : T→T→T := λ(x:T),(λ(y:T),x)
 def false : T→T→T := λ(x:T),(λ(y:T),y)
 
 #eval (true t) f
+#eval false t f

@@ -17,6 +17,10 @@ type command =
   | Decl of name * typexp * exp
   | Eval of exp
 
+let rec app f = function
+  | []      -> f
+  | x :: xs -> app (EApp (f, x)) xs
+
 let rec t_to_s (t : typexp): name :> string =
   match t with
   | TVar n -> n

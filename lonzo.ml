@@ -25,7 +25,6 @@ let rec reduce (exp : Expr.exp): Expr.exp =
       (* Printf.printf "ELam %s\n" (Expr.e_to_s e); *)
       ELam (p, e)
     end
-(* TODO: Checkout order of successive EApp *)
   | EApp (e1, e2) ->
     (* Printf.printf "EApp %s * %s\n" (Expr.e_to_s e1) (Expr.e_to_s e2); *)
     let re1 = reduce e1 in
