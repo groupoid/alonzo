@@ -6,3 +6,10 @@ def false : T→T→T := λ (x:T) (y:T),y
 
 #eval λ (t: T) (f: T), (true t) f : T→T→T
 #eval λ (t: T) (f: T), false t f : T→T→T
+
+#eval (λ(x:(T→T→T)→(T→T→T)),x) (λ(y:T→T→T),y) : (T→T→T)→(T→T→T)
+
+def zero : (Z→S)→Z→Z := λ(s: Z→S)(z: Z),z
+def succ : ((Z→S)→Z→Z)→((Z→S)→(Z→S)) := λ (w: (Z→S)→Z→Z) (y: (Z→S)) (x: Z), y (w y x)
+
+#eval succ zero : (Z→S)→(Z→S)
