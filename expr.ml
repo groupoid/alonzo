@@ -12,7 +12,6 @@ type exp =
   | EApp of exp * exp
   | EVar of name
 
-(* TODO: Checkout lean syntax for abbrev *)
 type command =
   | Decl of name * typexp * exp
   | Eval of exp * typexp
