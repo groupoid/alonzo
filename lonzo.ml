@@ -13,28 +13,16 @@ let rec subst (x: Expr.name) (sub: Expr.exp): Expr.exp -> Expr.exp = function
 
 let rec reduce (exp : Expr.exp): Expr.exp =
   match exp with
-  | EVar n ->
-    begin
-      (* Printf.printf "EVar %s\n" n; *)
-      match ENV.find_opt n !env with
+  | EVar n -> begin match ENV.find_opt n !env with
       | Some v -> v
       | None -> EVar n
     end
-  | ELam (p, e) ->
-    begin
-      (* Printf.printf "ELam %s\n" (Expr.e_to_s e); *)
-      ELam (p, e)
-    end
+  | ELam (p, e) -> ELam (p, e)
   | EApp (e1, e2) ->
-    (* Printf.printf "EApp %s * %s\n" (Expr.e_to_s e1) (Expr.e_to_s e2); *)
     let re1 = reduce e1 in
     let re2 = reduce e2 in
     begin match re1 with
-      | ELam (PVar (n, _), e) ->
-        begin
-          (* Printf.printf "SUB ELam %s\n" (subst n re2 e |> Expr.e_to_s); *)
-          subst n re2 e
-        end
+      | ELam (PVar (n, _), e) -> subst n re2 e
       | _ -> EApp (re1, re2)
     end
 
