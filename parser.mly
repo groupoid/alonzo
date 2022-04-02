@@ -21,9 +21,13 @@ typexp:
 param:
   | LPARENS IDENT COLON typexp RPARENS { PVar ($2, $4) }
 
+params:
+  | param params { $1 :: $2 }
+  | param        { [$1]     }
+
 exp:
   | IDENT { EVar $1 }
-  | LAM param COMMA exp { ELam ($2, $4) }
+  | LAM params COMMA exp { lam $2 $4 }
   | exp2 exp2+ { app $1 $2 }
   | LPARENS exp RPARENS { $2 }
 
