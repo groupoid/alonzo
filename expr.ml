@@ -15,7 +15,7 @@ type exp =
 (* TODO: Checkout lean syntax for abbrev *)
 type command =
   | Decl of name * typexp * exp
-  | Eval of exp
+  | Eval of exp * typexp
 
 let rec lam params exp =
   match params with

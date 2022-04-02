@@ -38,7 +38,7 @@ exp2:
 command:
   /* | ABBREV IDENT param DEFEQ typeexp { Dabb ($2, $3, $5) } */
   | DEF IDENT COLON typexp DEFEQ exp { Decl ($2, $4, $6) }
-  | EVAL exp { Eval $2 }
+  | EVAL exp COLON typexp { Eval ($2, $4) }
 
 main:
   | command main { $1 :: $2 }
