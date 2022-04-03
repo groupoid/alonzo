@@ -41,7 +41,8 @@ let rec reduce (exp : Expr.exp): Expr.exp =
     let re1 = reduce e1 in
     let re2 = reduce e2 in
     begin match re1 with
-      | ELam (PVar (n, _), e) -> subst n re2 e
+      (* TODO: Is this typesafe? *)
+      | ELam (PVar (n, _), e) -> reduce (subst n re2 e)
       | _ -> EApp (re1, re2)
     end
 

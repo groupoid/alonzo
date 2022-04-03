@@ -9,7 +9,12 @@ def false : T→T→T := λ (x:T) (y:T),y
 
 #eval (λ(x:(T→T→T)→(T→T→T)),x) (λ(y:T→T→T),y) : (T→T→T)→(T→T→T)
 
-def zero : (Z→S)→Z→Z := λ(s: Z→S)(z: Z),z
-def succ : ((Z→S)→Z→Z)→((Z→S)→(Z→S)) := λ (w: (Z→S)→Z→Z) (y: (Z→S)) (x: Z), y (w y x)
+def zero : (T→T)→T→T := λ(s: T→T)(z: T),z
+def one : (T→T)→T→T := λ(s: T→T)(z: T), s z
+def two : (T→T)→T→T := λ(s: T→T)(z: T), s (s z)
+def three : (T→T)→T→T := λ(s: T→T)(z: T), s (s (s z))
+def succ : ((T→T)→T→T)→((T→T)→T→T) := λ (w: (T→T)→T→T) (y: (T→T)) (x: T), y (w y x)
 
-#eval succ zero : (Z→S)→(Z→S)
+#eval succ zero : (T→T)→T→T
+#eval succ one : (T→T)→T→T
+#eval succ two : (T→T)→T→T
