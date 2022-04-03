@@ -3,6 +3,7 @@
 TODO: 
 - add abbreviations
 - add better errors
+- add function equality
 
 ```shell
 $ dune build
