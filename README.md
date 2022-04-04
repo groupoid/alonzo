@@ -9,7 +9,7 @@ $ dune build
 $ dune exec lonzo lib/test.nz
 ```
 
-## STLS
+## STLC
 
 * <a href="https://arxiv.org/pdf/1411.1029.pdf">An overview of type theories</a> [Guallart]
 
