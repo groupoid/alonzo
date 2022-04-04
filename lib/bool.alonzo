@@ -1,0 +1,12 @@
+-- STLC
+
+#eval λ (x: T), x : T → T
+#eval (λ (x: T → T),x) (λ (y: T), y) : T → T
+
+def true  : T → T → T := λ (x: T), λ (y:T), x
+def false : T → T → T := λ (x: T) (y: T), y
+
+#eval λ (t: T) (f: T), true t f : T → T → T
+#eval λ (t: T) (f: T), false t f : T → T → T
+#eval (λ (x: (T → T → T) → (T → T → T)), x) (λ (y: T → T → T), y) : (T → T → T) → (T → T → T)
+
