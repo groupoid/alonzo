@@ -1,12 +1,12 @@
 -- STLC
 
-def zero : (T → T) → T → T := λ(s: T → T)(z: T),z
-def one : (T → T) → T → T := λ(s: T → T)(z: T), s z
-def two : (T → T) → T → T := λ(s: T → T)(z: T), s (s z)
-def three : (T → T) → T → T := λ(s: T → T)(z: T), s (s (s z))
+def zero : (T → T) → T → T := λ (s: T → T) (z: T),z
+def one : (T → T) → T → T := λ (s: T → T) (z: T), s z
+def two : (T → T) → T → T := λ (s: T → T) (z: T), s (s z)
+def three : (T → T) → T → T := λ (s: T → T) (z: T), s (s (s z))
 
 def succ : ((T → T) → T → T) → ((T → T) → T → T)
- := λ (w: (T → T) → T → T) (y: (T → T)) (x: T), y (w y x)
+ := λ (w: (T → T) → T → T) (y: T → T) (x: T), y (w y x)
 
 #eval succ zero : (T → T) → T → T
 #eval succ one : (T → T) → T → T
