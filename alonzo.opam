@@ -1,11 +1,11 @@
 opam-version: "2.0"
-name: "lonzo"
+name: "alonzo"
 version: "0.4.0"
 maintainer: "Namdak Tönpa <namdak.tonpa@gmail.com>"
 authors: [ "Oleh Marakhovskyi @jealrock" ]
-homepage: "https://github.com/groupoid/lonzo"
-bug-reports: "https://github.com/groupoid/lonzo/issues"
-dev-repo: "git+https://github.com/groupoid/lonzo"
+homepage: "https://github.com/groupoid/alonzo"
+bug-reports: "https://github.com/groupoid/alonzo/issues"
+dev-repo: "git+https://github.com/groupoid/alonzo"
 synopsis: "STLC type system"
 license: "ISC"
 depends: [

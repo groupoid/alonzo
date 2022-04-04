@@ -1,2 +1,2 @@
 (env (dev (flags (:standard -warn-error -A))))
-(install (files lib/test.nz) (section share) (package lonzo))
+(install (files lib/test.nz) (section share) (package alonzo))
