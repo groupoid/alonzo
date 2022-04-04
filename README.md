@@ -6,7 +6,7 @@ STLC type system
 
 ```shell
 $ dune build
-$ dune exec alonzo lib/test.nz
+$ dune exec alonzo lib/test.alonzo
 ```
 
 ## STLC
