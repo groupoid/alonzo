@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5 APR 2022 Version 0.4 Church Encoding:
+5 APR 2022 Version 0.4.0 Church Encoding:
 
 * Bool and Nat terms
 * Pure Core of Simply Typed Lambda Calculus in 100 LOC
