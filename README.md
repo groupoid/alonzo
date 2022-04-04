@@ -1,6 +1,6 @@
 # Lonzo
 
-STLC type checker
+STLC type system
 
 ## Build
 
