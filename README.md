@@ -1,4 +1,4 @@
-# Lonzo
+# Alonzo
 
 STLC type system
 
