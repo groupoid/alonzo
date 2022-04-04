@@ -1,14 +1,11 @@
-%{
-  open Expr
-%}
+%{ open Expr %}
 
 %token <string> IDENT
 %token LPARENS RPARENS
-%token COLON COMMA LAM ARROW DEF DEFEQ ABBREV EVAL
+%token COLON COMMA LAM ARROW DEF DEFEQ EVAL
 %token EOF
 
 %right ARROW
-
 %start <Expr.command list> main
 
 %%
@@ -36,7 +33,6 @@ exp2:
   | LPARENS exp RPARENS { $2 }
 
 command:
-  /* | ABBREV IDENT param DEFEQ typeexp { Dabb ($2, $3, $5) } */
   | DEF IDENT COLON typexp DEFEQ exp { Decl ($2, $4, $6) }
   | EVAL exp COLON typexp { Eval ($2, $4) }
 

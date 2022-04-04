@@ -1,8 +1,2 @@
-(ocamllex lexer)
-
-(menhir
- (modules parser)
- (flags --explain --inspection --table --dump)
-)
-
-(executable (name lonzo) (libraries menhirLib))
+(env (dev (flags (:standard -warn-error -A))))
+(install (files lib/test.nz) (section share) (package lonzo))

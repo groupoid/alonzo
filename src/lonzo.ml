@@ -11,7 +11,7 @@ let rec teval (params: Expr.param list): Expr.exp -> Expr.typexp = function
       let param = List.find_opt (function Expr.PVar(pn, _) -> pn = n) params in
       match param with
       | None -> begin match ENV.find_opt n !env with
-        | Some v -> teval [] v (* TODO: Improve by adding types to tenv *)
+        | Some v -> teval [] v
         | None -> failwith "Unbound variable"
       end
       | Some PVar (_, t) -> t
@@ -41,7 +41,6 @@ let rec reduce (exp : Expr.exp): Expr.exp =
     let re1 = reduce e1 in
     let re2 = reduce e2 in
     begin match re1 with
-      (* TODO: Is this typesafe? *)
       | ELam (PVar (n, _), e) -> reduce (subst n re2 e)
       | _ -> EApp (re1, re2)
     end

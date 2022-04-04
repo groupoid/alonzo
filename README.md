@@ -1,11 +1,10 @@
-# Build
+# Lonzo
 
-TODO: 
-- add abbreviations
-- add better errors
-- add function equality
+STLC type checker
+
+## Build
 
 ```shell
 $ dune build
-$ ./_build/default/lonzo.exe test.nz
+$ dune exec lonzo lib/test.nz
 ```
