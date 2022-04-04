@@ -8,3 +8,7 @@ STLC type system
 $ dune build
 $ dune exec lonzo lib/test.nz
 ```
+
+## Credits
+
+* Oleh Marakhovskyi
