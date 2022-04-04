@@ -1,0 +1,17 @@
+opam-version: "2.0"
+name: "lonzo"
+version: "0.4.0"
+maintainer: "Namdak Tönpa <namdak.tonpa@gmail.com>"
+authors: [ "Oleh Marakhovskyi @jealrock" ]
+homepage: "https://github.com/groupoid/lonzo"
+bug-reports: "https://github.com/groupoid/lonzo/issues"
+dev-repo: "git+https://github.com/groupoid/lonzo"
+synopsis: "STLC type system"
+license: "ISC"
+depends: [
+  "dune" {>= "2.9"}
+  "zarith" {>= "1.12"}
+  "ocaml" {>= "4.14.0"}
+  "menhir" {>= "20220210"}
+]
+build: [ ["dune" "build" "-p" name "-j" jobs] ]
