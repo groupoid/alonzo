@@ -1,6 +1,6 @@
-module ENV = Map.Make (String)
+open Error
 
-exception Parser of int * int * string
+module ENV = Map.Make (String)
 
 type tenv = Expr.exp ENV.t
 
@@ -12,7 +12,7 @@ let rec teval (params: Expr.param list): Expr.exp -> Expr.typexp = function
       match param with
       | None -> begin match ENV.find_opt n !env with
         | Some v -> teval [] v
-        | None -> failwith "Unbound variable"
+        | None -> raise (UnboundVariable n)
       end
       | Some PVar (_, t) -> t
     end
@@ -21,8 +21,8 @@ let rec teval (params: Expr.param list): Expr.exp -> Expr.typexp = function
     let te1 = teval params e1 in
     let te2 = teval params e2 in
     begin match te1 with
-      | TVar _ -> failwith "Can't apply expression to a non-lambda expression"
-      | TFun (t1, t2) -> if t1 = te2 then t2 else failwith "Can't apply te2 to te1"
+      | TFun (t1, t2) when t1 = te2 -> t2
+      | _ -> raise (Application (e1, te1, e1, te2))
     end
 
 let rec subst (x: Expr.name) (sub: Expr.exp): Expr.exp -> Expr.exp = function
@@ -46,27 +46,22 @@ let rec reduce (exp : Expr.exp): Expr.exp =
     end
 
 let run (commands : Expr.command list): unit =
+  let checker (expected: Expr.typexp) (e: Expr.exp) (f: unit -> unit) =
+    let actual = teval [] e in
+    if actual = expected then f () else raise (Type (expected, actual)) in
+
   let runner = function
-    | Expr.Decl (n, t, e) -> begin
-        if teval [] e = t then
-          env := ENV.add n (reduce e) !env
-        else
-          failwith "Incorrect resulting type"
-      end
-    | Expr.Eval (e, t) -> begin
-        if teval [] e = t then
-          print_endline (reduce e |> Expr.e_to_s)
-        else
-          failwith "Incorrect resulting type"
-      end
-  in List.iter runner commands
+    | Expr.Decl (n, t, e) -> checker t e (fun () -> env := ENV.add n (reduce e) !env);
+    | Expr.Eval (e, t) -> checker t e (fun () -> print_endline (reduce e |> Expr.e_to_s)); in
+
+  List.iter runner commands
 
 let evalFile path : unit =
   let chan = open_in path in
   let lexbuf = Lexing.from_channel chan in
   try
     let commands = Parser.main Lexer.read lexbuf in
-    run commands;
+    handle_errors run commands;
     close_in chan;
     flush_all ()
   with Parser.Error ->
