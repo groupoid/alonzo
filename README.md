@@ -1,5 +1,7 @@
 # Alonzo
 
+<img src="https://anders.groupoid.space/images/alonzo.png" width=600>
+
 STLC type system
 
 ## Build
