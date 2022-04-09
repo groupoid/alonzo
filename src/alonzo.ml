@@ -25,7 +25,7 @@ let rec teval (params: Expr.param list): Expr.exp -> Expr.typexp = function
     let te2 = teval params e2 in
     begin match te1 with
       | TFun (t1, t2) when t1 = te2 -> unabbr t2
-      | _ -> raise (Application (e1, te1, e1, te2))
+      | _ -> raise (Application (e1, te1, e2, te2))
     end
 
 let rec subst (x: Expr.name) (sub: Expr.exp): Expr.exp -> Expr.exp = function
