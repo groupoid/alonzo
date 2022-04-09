@@ -2,7 +2,7 @@
 
 %token <string> IDENT
 %token LPARENS RPARENS
-%token COLON COMMA LAM ARROW DEF DEFEQ EVAL
+%token COLON COMMA LAM ARROW DEF DEFEQ EVAL ABBREV
 %token EOF
 
 %right ARROW
@@ -15,5 +15,5 @@ param: LPARENS IDENT COLON typexp RPARENS { PVar ($2, $4) }
 params: param params { $1 :: $2 } | param  { [$1] }
 exp: IDENT { EVar $1 } | LAM params COMMA exp { lam $2 $4 } | exp2 exp2+ { app $1 $2 } | LPARENS exp RPARENS { $2 }
 exp2: IDENT { EVar $1 } | LPARENS exp RPARENS { $2 }
-command: DEF IDENT COLON typexp DEFEQ exp { Decl ($2, $4, $6) } | EVAL exp COLON typexp { Eval ($2, $4) }
+command: DEF IDENT COLON typexp DEFEQ exp { Decl ($2, $4, $6) } | ABBREV IDENT DEFEQ typexp { Abbr ($2, $4) } | EVAL exp COLON typexp { Eval ($2, $4) }
 main: command main { $1 :: $2 } | EOF { [] }

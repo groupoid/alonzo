@@ -14,6 +14,7 @@ type exp =
 
 type command =
   | Decl of name * typexp * exp
+  | Abbr of name * typexp
   | Eval of exp * typexp
 
 let rec lam params exp =

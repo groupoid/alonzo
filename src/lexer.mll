@@ -34,6 +34,7 @@ rule read = parse
 | ':' { COLON }
 | ',' { COMMA }
 | "def" { DEF }
+| "abbrev" { ABBREV }
 | defeq { DEFEQ }
 | "#eval" { EVAL }
 | ident as s { IDENT s }
