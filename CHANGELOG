@@ -7,3 +7,7 @@ Changelog
 * Pure Core of Simply Typed Lambda Calculus in 100 LOC
 * Parser in 15 LOC
 * Lexer in 35 LOC
+
+2 JUN 2025 Version 3.6.0 STLC Implementation
+
+* Added stlc.ml as alternative implementation

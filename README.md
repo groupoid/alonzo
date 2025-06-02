@@ -2,7 +2,7 @@
 
 <img src="https://anders.groupoid.space/images/alonzo.png" width=600>
 
-STLC type system
+Alonzo is a STLC type system written in OCaml.
 
 ## Build
 

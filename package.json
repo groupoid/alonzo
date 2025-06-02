@@ -1,0 +1,27 @@
+{
+  "name": "alonzo",
+  "version": "1.0.1",
+  "description": "Groupoid Infinity Institute",
+  "main": "",
+  "scripts": {
+    "start": "node-sass ./styles -o ./ && pug -O ./framework.js index.pug ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/groupoid/alonzo"
+  },
+  "author": "Namdak Tonpa",
+  "license": "DHARMA",
+  "preinstall": "npm i -g node-sass && npm i -g pug-cli",
+  "dependencies": {
+    "mathjax-full": "^3.2.0",
+    "npm": "^8.12.1",
+    "pug": "^3.0.2",
+    "pug-cli": "^1.0.0-alpha6",
+    "sass": "^1.52.2"
+  },
+  "devDependencies": {
+    "node-sass": "^7.0.3"
+  }
+}

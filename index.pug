@@ -1,0 +1,195 @@
+include header
+
+html
+    head
+        meta(property='og:title'       content='Alonzo')
+        meta(property='og:description' content='Внутрішня мова декартово замкнених категорій')
+        meta(property='og:url'         content='https://alonzo.groupoid.space/')
+
+block title
+    title STLC
+
+block content
+    +header('', 'Alonzo', 'Мінімальна мова для функціональних обчислень у картезіанських замкнених категоріях')
+    article.main
+        .exe
+            section
+                h1 Анотація
+            aside Намдак Тонпа
+                time ДАТА: 2 ЧЕРВНЯ 2025
+            section
+                +tex.
+                    Мова програмування $\mathbf{Alonzo}$ — це внутрішня мова картезіанських замкнених категорій,
+                    що реалізує функціональні обчислення через лямбда-абстракцію, аплікацію, стрілкові типи,
+                    одиничний тип та добутки. Вона забезпечує строгу типізацію та відповідає структурі CCC.
+
+        .semantics
+            section
+                h2#ast Синтаксис
+                +tex.
+                    Терми $\mathbf{Alonzo}$ складаються зі змінних, зірки (тип типів), стрілкових типів,
+                    лямбда-абстракцій, аплікацій, одиничного типу, добутків, пар та їх проекцій.
+                    Мова підтримує строгі типи, забезпечуючи типобезпеку.
+                code.
+                    I = #identifier
+                    STLC = I | Star | Arrow (STLC, STLC) | Lam (I, STLC, STLC)
+                           | App (STLC, STLC) | Unit | Prod (STLC, STLC)
+                           | Pair (STLC, STLC) | Pr1 STLC | Pr2 STLC
+                br.
+                code('OCaml').
+                    type term =
+                        | Var of string
+                        | Star
+                        | Arrow of term * term
+                        | Lam of string * term * term
+                        | App of term * term
+                        | Unit
+                        | Prod of term * term
+                        | Pair of term * term
+                        | Pr1 of term
+                        | Pr2 of term
+                br.
+
+                h2#rules Правила обчислень
+                +tex.
+                    Обчислення в $\mathbf{Alonzo}$ базуються на бета-редукції для аплікацій
+                    та редукції для проекцій пар, з підтримкою eta-рівності.
+                code.
+                    App (Lam (x, A, t), u) → subst x u t        (* β-редукція *)
+                    Pr1 (Pair (t,unofficial, u)) → t            (* π1-редукція *)
+                    Pr2 (Pair (t, u)) → u                       (* π2-редукція *)
+                    Lam (x, A, App (t, Var x)) → t              (* η-рівність *)
+                br.
+                +tex(true).
+                    $$
+                    \begin{equation}
+                    \tag{β-reduction}
+                    \dfrac
+                    {(\lambda x : A . t) \, u}
+                    {t[x \mapsto u]}
+                    \end{equation}
+                    $$
+                +tex(true).
+                    $$
+                    \begin{equation}
+                    \tag{π1-reduction}
+                    \dfrac
+                    {\pi_1 \langle t, u \rangle}
+                    {t}
+                    \end{equation}
+                    $$
+                +tex(true).
+                    $$
+                    \begin{equation}
+                    \tag{π2-reduction}
+                    \dfrac
+                    {\pi_2 \langle t, u \rangle}
+                    {u}
+                    \end{equation}
+                    $$
+
+                h2#typing Правила типізації
+                +tex.
+                    Типізація в $\mathbf{Alonzo}$ забезпечує, що кожен терм має коректний тип.
+                    Основні правила включають:
+                code.
+                    (* Контекст: Γ = список пар (x : A) *)
+                    Var x : A                     (* якщо (x : A) ∈ Γ *)
+                    Star : Star                   (* тип типів *)
+                    Arrow (A, B) : Star          (* якщо A : Star, B : Star *)
+                    Lam (x, A, t) : Arrow (A, B) (* якщо Γ ⊢ A : Star, Γ, x : A ⊢ t : B *)
+                    App (t, u) : B               (* якщо t : Arrow (A, B), u : A *)
+                    Unit : Star                   (* одиничний тип *)
+                    Prod (A, B) : Star           (* якщо A : Star, B : Star *)
+                    Pair (t, u) : Prod (A, B)    (* якщо t : A, u : B *)
+                    Pr1 t : A                    (* якщо t : Prod (A, B) *)
+                    Pr2 t : B                    (* якщо t : Prod (A, B) *)
+                br.
+
+                h2 Підстановка
+                +tex.
+                    Підстановка в $\mathbf{Alonzo}$ замінює змінну на терм, зберігаючи типобезпеку.
+                code('OCaml').
+                    let rec subst x s = function
+                        | Var y -> if x = y then s else Var y
+                        | Arrow (a, b) -> Arrow (subst x s a, subst x s b)
+                        | Lam (y, a, b) when x <> y -> Lam (y, subst x s a, subst x s b)
+                        | App (f, a) -> App (subst x s f, subst x s a)
+                        | Prod (a, b) -> Prod (subst x s a, subst x s b)
+                        | Pair (t1, t2) -> Pair (subst x s t1, subst x s t2)
+                        | Pr1 t -> Pr1 (subst x s t)
+                        | Pr2 t -> Pr2 (subst x s t)
+                        | t -> t
+                br.
+
+                h2 Редукція
+                +tex.
+                    Редукція виконує бета-редукцію та редукцію проекцій для активних пар.
+                code('OCaml').
+                    let rec reduce ctx t = match t with
+                        | App (Lam (x, _, b), a) -> subst x a b
+                        | App (f, a) -> App (reduce ctx f, reduce ctx a)
+                        | Pr1 (Pair (t1, _)) -> t1
+                        | Pr2 (Pair (_, t2)) -> t2
+                        | Pr1 t -> Pr1 (reduce ctx t)
+                        | Pr2 t -> Pr2 (reduce ctx t)
+                        | _ -> t
+                br.
+
+                h2 Нормалізація
+                +tex.
+                    Нормалізація повторює редукцію до досягнення нормальної форми.
+                code('OCaml').
+                    let rec normalize ctx t =
+                        let t' = reduce ctx t in
+                        if equal ctx t t' then t else normalize ctx t'
+                br.
+
+                h2 Внутрішня мова CCC
+                +tex.
+                    Доведення, що $\mathbf{Alonzo}$ є внутрішньою мовою картезіанських замкнених категорій:
+                +tex(true).
+                    $$
+                    \begin{cases}
+                       \mathrm{Var} : A, \\
+                       \mathrm{Star} : \mathrm{Type}, \\
+                       \mathrm{Arrow} : A \to B \to \mathrm{Type}, \\
+                       \mathrm{Lam} : (A \to B) \to (A \implies B), \\
+                       \mathrm{App} : (A \implies B) \to A \to B, \\
+                       \mathrm{Unit} : \mathbf{1}, \\
+                       \mathrm{Prod} : A \to B \to \mathrm{Type}, \\
+                       \mathrm{Pair} : A \to B \to A \times B, \\
+                       \mathrm{Pr1} : A \times B \to A, \\
+                       \mathrm{Pr2} : A \times B \to B.
+                    \end{cases}
+                    $$
+                +tex.
+                    Ці конструктори відповідають аксіомам CCC:
+                +tex.
+                    $\mathrm{Star}$ позначає об'єкти категорії (типи),
+                    $\mathrm{Arrow}$ моделює експоненціальний об'єкт $B^A$,
+                    $\mathrm{Lam}$ відповідає морфізму $\lambda: (A \to B) \to (A \implies B)$,
+                    $\mathrm{App}$ реалізує оцінку $ev: (A \implies B) \times A \to B$,
+                    $\mathrm{Unit}$ є термінальним об'єктом $\mathbf{1}$, для якого $A \to \mathbf{1}$ є унікальним,
+                    $\mathrm{Prod}$ моделює картезіанський добуток $A \times B$,
+                    $\mathrm{Pair}$ створює пару $\langle t, u \rangle: A \to B \to A \times B$,
+                    $\mathrm{Pr1}$ і $\mathrm{Pr2}$ є проекціями $\pi_1: A \times B \to A$ та $\pi_2: A \times B \to B$,
+                    $\mathrm{Var}$ позначає об'єкти категорії.
+                +tex.
+                    Лямбда-абстракція та аплікація відповідають структурі CCC:
+                +tex(true).
+                    $$
+                    \begin{cases}
+                      \lambda x.t \vdash \mathrm{Lam}(x, A, t): A \implies B, \\
+                      t \, u \mapsto \mathrm{App}(t, u): B.
+                    \end{cases}
+                    $$
+
+            section
+                h1 Бібліографія
+                p(style="font-size:16px;").
+                    [1]. <a href="https://media.githubusercontent.com/media/storagelfs/books/main/Origins%20of%20Intuitionism/Church/Church.%201940.pdf">Church, A. A Formulation of the Simple Theory of Types. 1940</a><br>
+                    [2]. <a href="https://arxiv.org/pdf/1411.1029.pdf">Guallart, N. An Overview of Type Theories. 2014</a><br>
+                    [3]. <a href="https://mroman42.github.io/ctlc/ctlc.pdf">García, M. Category Theory and Lambda Calculus. 2020</a><br>
+
+include footer
